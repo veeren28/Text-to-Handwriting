@@ -1,1 +1,13 @@
 @import "tailwindcss";
+@font-face {
+  font-family: "Handwritng1";
+  src: url("./fonts/Handwritng1.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Handwritng2";
+  src: url("./fonts/Handwritng2.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Handwritng3";
+  src: url("./fonts/Handwritng3.ttf") format("truetype");
+}

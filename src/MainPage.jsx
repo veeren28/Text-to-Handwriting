@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import img from "./assets/image.png";
-
+import i1 from "./pages/page1.jpg";
+import i2 from "./pages/page2.jpg";
 // const MainPage = () => {
 //   const [isOpen, setIsOpen] = useState(false);
 //   function ToggleEvent() {
@@ -99,40 +99,80 @@ import img from "./assets/image.png";
 // };
 
 // export default MainPage;
-
 const MainPage = () => {
+  const [text, setText] = useState("");
+  const [handW, setHandW] = useState("Handwriting1");
+  const [img, setImg] = useState("page1");
+  const [preImg, setPreImg] = useState(i1);
+  const PreviewImg = (e) => {
+    const selected = e.target.value;
+    setImg(selected);
+    if (selected == "page1") setPreImg(i1);
+    else if (selected == "page2") setPreImg(i2);
+  };
+  const HandleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = FormData();
+    formData.append("text", text);
+    formData.append("handW", handW);
+    formData.append("img", img);
+    try {
+      const response = await fetch("", { method: "POST", body: formData });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-1 flex-col  justify-center items-center">
       <h1 className="text-3xl font-bold">Text2HandWriting</h1>
       <div className="flex flex-1 flex-row justify-center ">
         {" "}
-        <div>
-          <img src={img} alt="" />
+        <div className="flex-1 flex justify-center items-start">
+          <img src={preImg} alt="" className="max-w-sm rounded shadow" />
         </div>
         <div className="flex flex-col justify-center">
-          <form action="" className="">
+          <form action="" onSubmit={HandleSubmit} className="">
             <label className=""> Enter Text</label>
-            <textarea className="w-full h-25 p-1 max-w-md space-y-4 bg-white  rounded-lg shadow-md"></textarea>
+            <textarea
+              className="w-full h-25 p-1 max-w-md space-y-4 bg-white  rounded-lg shadow-md"
+              onChange={(e) => setText(e.target.value)}
+              value={text}
+              name="text"
+              required
+            ></textarea>
           </form>
-
           <div>
             <label className="block mb-1 font-semi-bold">
               {" "}
               Select a Font Style
             </label>
-            <select className="bg-gray-300 rounded-md p-2 shadow-md ">
-              <option value="">HandWriting 1</option>
-              <option value="">HandWriting 2</option>
+            <select
+              className="bg-gray-300 rounded-md p-2 shadow-md outline-0"
+              value={handW}
+              onChange={(e) => setHandW(e.target.value)}
+            >
+              <option value="Handwriting1">HandWriting 1</option>
+              <option value="Handwriting2">HandWriting 2</option>
             </select>
           </div>
           <div>
             <label> Select a Page</label>
             <br />
-            <select className="bg-gray-300 rounded-md p-2 shadow-md ">
-              <option value="">Page 1</option>
-              <option value="">Page 2</option>
+            <select
+              className="bg-gray-300 rounded-md p-2 shadow-md outline-0"
+              onChange={PreviewImg}
+            >
+              <option value="page1">Page 1</option>
+              <option value="page2">Page 2</option>
             </select>
-          </div>
+          </div>{" "}
+          <button
+            type="submit"
+            className="bg-gray-400 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-500 cursor-pointer"
+          >
+            Generate PDF
+          </button>
         </div>
       </div>
     </div>
